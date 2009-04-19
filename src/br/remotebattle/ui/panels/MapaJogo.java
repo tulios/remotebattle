@@ -1,4 +1,4 @@
-package br.remotebattle.ui;
+package br.remotebattle.ui.panels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -9,11 +9,12 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import br.remotebattle.dominio.Jogador;
+import br.remotebattle.ui.panels.componentes.BlocoGrafico;
 
 @SuppressWarnings("serial")
 public class MapaJogo extends JPanel {
 
-	private BlocoGrafico[][] mapaGrafico;
+	private BlocoGrafico[][] blocos;
 	private Jogador jogador;
 
 	private BlocoGrafico root;
@@ -28,7 +29,7 @@ public class MapaJogo extends JPanel {
 	}
 
 	public void inicializarBlocosGraficos(){
-		mapaGrafico = new BlocoGrafico[getTamanho()][getTamanho()];
+		blocos = new BlocoGrafico[getTamanho()][getTamanho()];
 	}
 	
 	private void apresentarMapaGrafico(){
@@ -81,11 +82,11 @@ public class MapaJogo extends JPanel {
 	 */
 	
 	public BlocoGrafico getBloco(int x, int y){
-		return mapaGrafico[x][y];
+		return blocos[x][y];
 	}
 	
 	public void setBloco(int x, int y){
-		mapaGrafico[x][y] = new BlocoGrafico(this, x, y);
+		blocos[x][y] = new BlocoGrafico(this, x, y);
 	}
 	
 	public int getTamanho(){
@@ -101,7 +102,7 @@ public class MapaJogo extends JPanel {
 	}
 
 	public BlocoGrafico[][] getMapaGrafico() {
-		return mapaGrafico;
+		return blocos;
 	}
 	
 	/*
@@ -115,7 +116,7 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico getBlocoADireita(BlocoGrafico blocoAtual){
 
 		if(temVizinhoADireita(blocoAtual))
-			return this.mapaGrafico[blocoAtual.getCoordX()+1][blocoAtual.getCoordY()];
+			return this.blocos[blocoAtual.getCoordX()+1][blocoAtual.getCoordY()];
 
 		return null;
 	}
@@ -136,7 +137,7 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico getBlocoAEsquerda(BlocoGrafico blocoAtual){
 
 		if(temVizinhoAEsquerda(blocoAtual))
-			return this.mapaGrafico[blocoAtual.getCoordX()-1][blocoAtual.getCoordY()];
+			return this.blocos[blocoAtual.getCoordX()-1][blocoAtual.getCoordY()];
 
 		return null;
 	}
@@ -157,7 +158,7 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico getBlocoAcima(BlocoGrafico blocoAtual){
 
 		if(temVizinhoAcima(blocoAtual))
-			return this.mapaGrafico[blocoAtual.getCoordX()][blocoAtual.getCoordY()-1];
+			return this.blocos[blocoAtual.getCoordX()][blocoAtual.getCoordY()-1];
 
 		return null;
 	}
@@ -178,7 +179,7 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico getBlocoAbaixo(BlocoGrafico blocoAtual){
 
 		if(temVizinhoAbaixo(blocoAtual))
-			return this.mapaGrafico[blocoAtual.getCoordX()][blocoAtual.getCoordY()+1];
+			return this.blocos[blocoAtual.getCoordX()][blocoAtual.getCoordY()+1];
 
 		return null;
 	}
@@ -197,7 +198,7 @@ public class MapaJogo extends JPanel {
 	}
 
 	private boolean temVizinhoADireita(BlocoGrafico blocoAtual) {
-		return blocoAtual != null && blocoAtual.getCoordX() < mapaGrafico.length -1;
+		return blocoAtual != null && blocoAtual.getCoordX() < blocos.length -1;
 	}
 
 	private boolean temVizinhoAEsquerda(BlocoGrafico blocoAtual) {
@@ -209,7 +210,7 @@ public class MapaJogo extends JPanel {
 	}
 
 	private boolean temVizinhoAbaixo(BlocoGrafico blocoAtual) {
-		return blocoAtual != null && blocoAtual.getCoordY() < mapaGrafico.length -1;
+		return blocoAtual != null && blocoAtual.getCoordY() < blocos.length -1;
 	}
 	
 	public boolean isMesmaLinhaDoRoot(BlocoGrafico bloco){

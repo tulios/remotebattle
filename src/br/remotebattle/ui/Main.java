@@ -1,11 +1,10 @@
-package br.remotebattle;
+package br.remotebattle.ui;
 
 import java.awt.BorderLayout;
 
 import br.remotebattle.dominio.Jogo;
 import br.remotebattle.dominio.enums.Dificuldade;
-import br.remotebattle.ui.Janela;
-import br.remotebattle.ui.MapaJogo;
+import br.remotebattle.ui.panels.MapaJogo;
 
 public class Main {
 	

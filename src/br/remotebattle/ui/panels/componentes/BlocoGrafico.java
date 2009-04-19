@@ -1,4 +1,4 @@
-package br.remotebattle.ui;
+package br.remotebattle.ui.panels.componentes;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+
+import br.remotebattle.ui.panels.MapaJogo;
 
 @SuppressWarnings("serial")
 public class BlocoGrafico extends JButton{
