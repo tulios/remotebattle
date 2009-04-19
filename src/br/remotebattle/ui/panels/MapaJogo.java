@@ -9,94 +9,96 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import br.remotebattle.dominio.Jogador;
+import br.remotebattle.dominio.enums.TipoBarco;
+import br.remotebattle.ui.Main;
 import br.remotebattle.ui.panels.componentes.BlocoGrafico;
 
 @SuppressWarnings("serial")
 public class MapaJogo extends JPanel {
+	private static final int TAMANHO_AREA = 5;
 
 	private BlocoGrafico[][] blocos;
 	private Jogador jogador;
 
 	private BlocoGrafico root;
-	private Color corPadraoBotao =  Color.WHITE;//new JButton().getBackground();
+	private Color corPadraoBotao =  Color.WHITE;
 
 	public MapaJogo(Jogador jogador){
 		this.jogador = jogador;
 		this.setLayout(new GridBagLayout());
-		
+
 		inicializarBlocosGraficos();
 		apresentarMapaGrafico();
 	}
 
-	public void inicializarBlocosGraficos(){
+	private void inicializarBlocosGraficos(){
 		blocos = new BlocoGrafico[getTamanho()][getTamanho()];
 	}
-	
+
 	private void apresentarMapaGrafico(){
 		GridBagConstraints cons = new GridBagConstraints();
-		
+
 		for(int y = 0; y < getTamanho(); y++){
 			for (int x = 0; x < getTamanho(); x++){
 				setBloco(x, y);
-				
+
 				cons.gridx = x;
 				cons.gridy = y;
 				this.add(getBloco(x, y), cons);
 			}
 		}
 	}
-	
+
 	public void preencherBarco(BlocoGrafico bloco){
 		if (!isRoot(bloco)){
-			preencherBlocosDoBardoDeVermelho(bloco);
+			preencherBlocosDoBarcoComACor(bloco);
 		}
 		liberarMapa();		
 	}
 
 	public void marcarArea(BlocoGrafico blocoAtual, boolean marcar){
 		this.root = blocoAtual;
-		final int TAMANHO = 3;
-		
+
 		List<BlocoGrafico> area = new ArrayList<BlocoGrafico>();
 		area.add(root);
-		area.addAll(getBlocosADireita(blocoAtual, TAMANHO));
-		area.addAll(getBlocosAEsquerda(blocoAtual, TAMANHO));
-		area.addAll(getBlocosAcima(blocoAtual, TAMANHO));
-		area.addAll(getBlocosAbaixo(blocoAtual, TAMANHO));
-		
-		marcarBlocosDaArea(area, marcar);		
-		
+		area.addAll(getBlocosADireita(blocoAtual, TAMANHO_AREA));
+		area.addAll(getBlocosAEsquerda(blocoAtual, TAMANHO_AREA));
+		area.addAll(getBlocosAcima(blocoAtual, TAMANHO_AREA));
+		area.addAll(getBlocosAbaixo(blocoAtual, TAMANHO_AREA));
+
+		marcarBlocosDaAreaDeSelecao(area, marcar);		
+
 		if (marcar){
-			bloquearBlocosForaDaArea();			
+			bloquearBlocosForaDaAreaDeSelecao();			
 		}else{
 			liberarMapa();
 		}
-		
+
 		this.validate();
 	}
-	
+
 	/*
 	 * 
 	 * getters and setters
 	 * 
 	 */
-	
+
 	public BlocoGrafico getBloco(int x, int y){
 		return blocos[x][y];
 	}
-	
+
 	public void setBloco(int x, int y){
 		blocos[x][y] = new BlocoGrafico(this, x, y);
 	}
-	
+
 	public int getTamanho(){
 		return jogador.getMapa().getTamanho();
 	}
-	
+
 	public BlocoGrafico getRoot() {
 		return root;
 	}
-	
+
 	public Jogador getJogador() {
 		return jogador;
 	}
@@ -104,7 +106,7 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico[][] getMapaGrafico() {
 		return blocos;
 	}
-	
+
 	/*
 	 * 
 	 * 
@@ -113,7 +115,27 @@ public class MapaJogo extends JPanel {
 	 *
 	 */
 
-	public BlocoGrafico getBlocoADireita(BlocoGrafico blocoAtual){
+	public boolean isBarco(BlocoGrafico bloco){
+		return TipoBarco.isBarco(bloco.getBackground());
+	}
+
+	public boolean isRoot(BlocoGrafico bloco){
+		return bloco.getCoordX() == getRoot().getCoordX() && bloco.getCoordY() == getRoot().getCoordY();
+	}
+	
+	public boolean isMesmaLinhaDoRoot(BlocoGrafico bloco){
+		return bloco.getCoordY() == root.getCoordY();
+	}
+
+	public boolean isAEsquerdaDoRoot(BlocoGrafico bloco){
+		return bloco.getCoordX() < root.getCoordX();
+	}
+
+	public boolean isAcimaDoRoot(BlocoGrafico bloco){
+		return bloco.getCoordY() < root.getCoordY();
+	}
+	
+	private BlocoGrafico getBlocoADireita(BlocoGrafico blocoAtual){
 
 		if(temVizinhoADireita(blocoAtual))
 			return this.blocos[blocoAtual.getCoordX()+1][blocoAtual.getCoordY()];
@@ -121,7 +143,7 @@ public class MapaJogo extends JPanel {
 		return null;
 	}
 
-	public List<BlocoGrafico> getBlocosADireita(BlocoGrafico blocoAtual, int quantidade){
+	private List<BlocoGrafico> getBlocosADireita(BlocoGrafico blocoAtual, int quantidade){
 		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
 
 		for (int x = 0; x < quantidade; x++){
@@ -134,7 +156,7 @@ public class MapaJogo extends JPanel {
 		return lista;
 	}
 
-	public BlocoGrafico getBlocoAEsquerda(BlocoGrafico blocoAtual){
+	private BlocoGrafico getBlocoAEsquerda(BlocoGrafico blocoAtual){
 
 		if(temVizinhoAEsquerda(blocoAtual))
 			return this.blocos[blocoAtual.getCoordX()-1][blocoAtual.getCoordY()];
@@ -142,7 +164,7 @@ public class MapaJogo extends JPanel {
 		return null;
 	}
 
-	public List<BlocoGrafico> getBlocosAEsquerda(BlocoGrafico blocoAtual, int quantidade){
+	private List<BlocoGrafico> getBlocosAEsquerda(BlocoGrafico blocoAtual, int quantidade){
 		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
 
 		for (int x = 0; x < quantidade; x++){
@@ -155,7 +177,7 @@ public class MapaJogo extends JPanel {
 		return lista;
 	}
 
-	public BlocoGrafico getBlocoAcima(BlocoGrafico blocoAtual){
+	private BlocoGrafico getBlocoAcima(BlocoGrafico blocoAtual){
 
 		if(temVizinhoAcima(blocoAtual))
 			return this.blocos[blocoAtual.getCoordX()][blocoAtual.getCoordY()-1];
@@ -163,7 +185,7 @@ public class MapaJogo extends JPanel {
 		return null;
 	}
 
-	public List<BlocoGrafico> getBlocosAcima(BlocoGrafico blocoAtual, int quantidade){
+	private List<BlocoGrafico> getBlocosAcima(BlocoGrafico blocoAtual, int quantidade){
 		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
 
 		for (int x = 0; x < quantidade; x++){
@@ -176,7 +198,7 @@ public class MapaJogo extends JPanel {
 		return lista;
 	}
 
-	public BlocoGrafico getBlocoAbaixo(BlocoGrafico blocoAtual){
+	private BlocoGrafico getBlocoAbaixo(BlocoGrafico blocoAtual){
 
 		if(temVizinhoAbaixo(blocoAtual))
 			return this.blocos[blocoAtual.getCoordX()][blocoAtual.getCoordY()+1];
@@ -184,7 +206,7 @@ public class MapaJogo extends JPanel {
 		return null;
 	}
 
-	public List<BlocoGrafico> getBlocosAbaixo(BlocoGrafico blocoAtual, int quantidade){
+	private List<BlocoGrafico> getBlocosAbaixo(BlocoGrafico blocoAtual, int quantidade){
 		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
 
 		for (int x = 0; x < quantidade; x++){
@@ -212,81 +234,86 @@ public class MapaJogo extends JPanel {
 	private boolean temVizinhoAbaixo(BlocoGrafico blocoAtual) {
 		return blocoAtual != null && blocoAtual.getCoordY() < blocos.length -1;
 	}
-	
-	public boolean isMesmaLinhaDoRoot(BlocoGrafico bloco){
-		return bloco.getCoordY() == root.getCoordY();
-	}
 
-	public boolean isAEsquerdaDoRoot(BlocoGrafico bloco){
-		return bloco.getCoordX() < root.getCoordX();
-	}
-	
-	public boolean isAcimaDoRoot(BlocoGrafico bloco){
-		return bloco.getCoordY() < root.getCoordY();
-	}
-	
-	public void adicionarTodosPelaDireita(List<BlocoGrafico> lista, BlocoGrafico bloco){
+	private void adicionarTodosPelaDireita(List<BlocoGrafico> lista, BlocoGrafico bloco){
 		lista.add(bloco);
 		while ((bloco = getBlocoADireita(bloco)) != null && bloco.getCoordX() != root.getCoordX()){
 			lista.add(bloco);
 		}
 	}
-	
-	public void adicionarTodosPelaEsquerda(List<BlocoGrafico> lista, BlocoGrafico bloco){
+
+	private void adicionarTodosPelaEsquerda(List<BlocoGrafico> lista, BlocoGrafico bloco){
 		lista.add(bloco);
 		while ((bloco = getBlocoAEsquerda(bloco)) != null && bloco.getCoordX() != root.getCoordX()){
 			lista.add(bloco);
 		}
 	}
-	
-	public void adicionarTodosParaBaixo(List<BlocoGrafico> lista, BlocoGrafico bloco){
+
+	private void adicionarTodosParaBaixo(List<BlocoGrafico> lista, BlocoGrafico bloco){
 		lista.add(bloco);
 		while ((bloco = getBlocoAbaixo(bloco)) != null && bloco.getCoordY() != root.getCoordY()){
 			lista.add(bloco);
 		}
 	}
-	
-	public void adicionarTodosParaCima(List<BlocoGrafico> lista, BlocoGrafico bloco){
+
+	private void adicionarTodosParaCima(List<BlocoGrafico> lista, BlocoGrafico bloco){
 		lista.add(bloco);
 		while ((bloco = getBlocoAcima(bloco)) != null && bloco.getCoordY() != root.getCoordY()){
 			lista.add(bloco);
 		}
 	}
-	
-	public void preencherBlocosDoBardoDeVermelho(BlocoGrafico blocoSelecionado){
-		for (BlocoGrafico bloco : getPartesBarco(blocoSelecionado)){
+
+	private void preencherBlocosDoBarcoComACor(BlocoGrafico blocoSelecionado){
+		List<BlocoGrafico> partesBarco = getPartesBarco(blocoSelecionado);
+		TipoBarco tipo = TipoBarco.newInstance(partesBarco.size());
+		
+		if (aindaPossoAdicionarBarco(tipo)){
+			marcarBarco(partesBarco, tipo);
+		}else{
+			getRoot().setMarcado(false);
+		}
+		
+		getRoot().setEnabled(true);				
+	}
+
+	private void marcarBarco(List<BlocoGrafico> partesBarco, TipoBarco tipo) {
+		atualizarInformacoesSobreBarcos(tipo);
+		pintarBarco(partesBarco, tipo);
+		getRoot().setMarcado(true);
+	}
+
+	private void pintarBarco(List<BlocoGrafico> partesBarco, TipoBarco tipo) {
+		for (BlocoGrafico bloco : partesBarco){
 			if (!bloco.isMarcado()){
-				bloco.setBackground(Color.RED);
+				bloco.setBackground(tipo.getCor());
 				bloco.setMarcado(true);
 			}
 		}
-		getRoot().setMarcado(true);
-		getRoot().setEnabled(true);
 	}
-	
-	public boolean isBarco(BlocoGrafico bloco){
-		return bloco.getBackground() == Color.RED;
+
+	private boolean aindaPossoAdicionarBarco(TipoBarco tipo) {
+		return tipo.getQuantidade() > Main.getInfo().getQuantidadeBarco(tipo);
 	}
-	
-	public boolean isRoot(BlocoGrafico bloco){
-		return bloco.getCoordX() == getRoot().getCoordX() && bloco.getCoordY() == getRoot().getCoordY();
+
+	private void atualizarInformacoesSobreBarcos(TipoBarco tipo) {
+		Main.getInfo().incrementarQuantidadeBarco(tipo);
 	}
-	
-	public void liberarMapa(){
+
+	private void liberarMapa(){
 		for(int y = 0; y < getTamanho(); y++){
 			for (int x = 0; x < getTamanho(); x++){
-				
+
 				if (!isBarco(getBloco(x, y))){
 					getBloco(x, y).setSelecionando(false);
 					getBloco(x, y).setBackground(corPadraoBotao);
 					getBloco(x, y).setEnabled(true);
 				}
-				
+
 			}
 		}
 	}
 
-	private void marcarBlocosDaArea(List<BlocoGrafico> area, boolean marcar){
+	private void marcarBlocosDaAreaDeSelecao(List<BlocoGrafico> area, boolean marcar){
 		for (BlocoGrafico b: area){
 			if (!b.isMarcado()){
 				if (marcar){
@@ -299,8 +326,8 @@ public class MapaJogo extends JPanel {
 			}
 		}
 	}
-	
-	public void bloquearBlocosForaDaArea(){
+
+	private void bloquearBlocosForaDaAreaDeSelecao(){
 		for(int y = 0; y < getTamanho(); y++){
 			for (int x = 0; x < getTamanho(); x++){
 				if (!getBloco(x,y).isSelecionando()){
@@ -309,28 +336,28 @@ public class MapaJogo extends JPanel {
 			}
 		}
 	}
-	
-	public List<BlocoGrafico> getPartesBarco(BlocoGrafico bloco){
+
+	private List<BlocoGrafico> getPartesBarco(BlocoGrafico bloco){
 		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
 
 		if (isMesmaLinhaDoRoot(bloco)){
-			
+
 			if (isAEsquerdaDoRoot(bloco)){
 				adicionarTodosPelaDireita(lista, bloco);
-				
+
 			}else{
 				adicionarTodosPelaEsquerda(lista, bloco);
 			}
-			
+
 		}else{
 			if (isAcimaDoRoot(bloco)){
 				adicionarTodosParaBaixo(lista, bloco);
-				
+
 			}else{
 				adicionarTodosParaCima(lista, bloco);
 			}
 		}
-		
+
 		//+ o root (1° bloco clicado, origem da seleção)
 		lista.add(root);
 		return lista;

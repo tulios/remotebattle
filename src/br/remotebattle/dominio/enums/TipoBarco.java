@@ -1,15 +1,23 @@
 package br.remotebattle.dominio.enums;
 
+import java.awt.Color;
+
 public enum TipoBarco {
 
-	PORTA_AVIOES(6,1), ENCOURACADO(5,2), CRUZADOR(4,3), SUBMARINO(3,3), REBOQUE(2,2);
+	PORTA_AVIOES(6,1, Color.RED), 
+	ENCOURACADO(5,2, Color.BLUE), 
+	CRUZADOR(4,3, Color.CYAN), 
+	SUBMARINO(3,3, Color.GREEN), 
+	REBOQUE(2,2, Color.MAGENTA);
 
 	private int tamanho;
 	private int quantidade;
+	private Color cor;
 	
-	TipoBarco(final int tamanho, final int quantidade){
-		this.tamanho = tamanho;
+	TipoBarco(final int tamanho, final int quantidade, Color cor){
+		this.tamanho = tamanho;		
 		this.quantidade = quantidade;
+		this.cor = cor;
 	}
 
 	public static TipoBarco newInstance(final int tamanho){
@@ -33,6 +41,15 @@ public enum TipoBarco {
 		return quantidadeDisponivel;
 	}
 	
+	public static boolean isBarco(Color cor){
+		for (TipoBarco tipo : TipoBarco.values()){
+			if (tipo.getCor() == cor){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public int getTamanho() {
 		return tamanho;
 	}
@@ -40,4 +57,29 @@ public enum TipoBarco {
 	public int getQuantidade() {
 		return quantidade;
 	}
+	
+	public Color getCor() {
+		return cor;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
