@@ -1,6 +1,8 @@
 package br.remotebattle.dominio;
 
-public class Bloco {
+import java.io.Serializable;
+
+public class Bloco implements Serializable {
 
 	private Coordenada coordenada;
 	private boolean ocupado;

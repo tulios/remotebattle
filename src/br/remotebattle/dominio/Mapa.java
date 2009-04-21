@@ -1,9 +1,10 @@
 package br.remotebattle.dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mapa {
+public class Mapa implements Serializable {
 
 	private Bloco[][] blocos;
 	private List<Barco> barcos;

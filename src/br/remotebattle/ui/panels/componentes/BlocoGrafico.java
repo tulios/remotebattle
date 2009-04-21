@@ -27,7 +27,6 @@ public class BlocoGrafico extends JButton{
 		this.setPreferredSize(new Dimension(25,25));
 		this.addActionListener(new ActionListener(){
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				click(e);
 			}

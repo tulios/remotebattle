@@ -1,8 +1,10 @@
 package br.remotebattle.dominio;
 
+import java.io.Serializable;
+
 import br.remotebattle.dominio.enums.Dificuldade;
 
-public class Jogador {
+public class Jogador implements Serializable {
 
 	private String nome;
 	private Mapa mapa;
