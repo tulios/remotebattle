@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 import br.remotebattle.dominio.enums.Dificuldade;
 
+@SuppressWarnings("serial")
 public class Jogador implements Serializable {
 
 	private String nome;
 	private Mapa mapa;
+	private Jogador oponente;
 	
 	public Jogador(String nome, Dificuldade dificuldade){
 		this.nome = nome;
@@ -24,5 +26,17 @@ public class Jogador implements Serializable {
 	
 	public Mapa getMapa() {
 		return mapa;
+	}
+
+	public Jogador getOponente() {
+		return oponente;
+	}
+
+	public void setOponente(Jogador oponente) {
+		this.oponente = oponente;
+	}
+	
+	public String toString(){
+		return this.nome;
 	}
 }

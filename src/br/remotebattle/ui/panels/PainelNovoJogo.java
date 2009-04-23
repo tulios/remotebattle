@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 
 import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;
-import br.remotebattle.remote.JogoRemoto;
+import br.remotebattle.remote.implementacao.JogoRemoto;
 import br.remotebattle.ui.Main;
 
 @SuppressWarnings("serial")
@@ -79,7 +79,7 @@ public class PainelNovoJogo extends JPanel{
 				JOptionPane.showMessageDialog(this,exception.getMessage());
 			}
 		
-			PainelJogosEmEspera.atualizarComboJogosEmEspera();
+			PainelJogosEmEspera.getInstance().atualizarComboJogosEmEspera();
 			
 			System.out.println("Novo jogo criado!");
 		} else {

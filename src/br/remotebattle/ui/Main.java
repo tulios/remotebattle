@@ -3,10 +3,12 @@ package br.remotebattle.ui;
 import java.awt.BorderLayout;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.remotebattle.dominio.Jogo;
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.IServicoJogos;
 import br.remotebattle.ui.panels.Info;
@@ -22,6 +24,7 @@ public class Main {
 	private static IJogoRemoto jogoRemoto;
 	private static PainelNovoJogo novoJogo;
 	private static PainelJogosEmEspera painelJogosEmEspera;
+	private static JPanel centro;
 	
 	public static void main(String[] args) {
 		
@@ -38,25 +41,10 @@ public class Main {
 			System.err.println(e.getMessage());
 		}
 
-		/*
-		Jogo jogo = new Jogo("Túlio", Dificuldade.DIFICIL);
-		
-		info = new Info();
-		Janela.getInstance().add(info, BorderLayout.PAGE_START);
-		
-		mapaJogo = new MapaJogo(jogo.getJogador1());
-		JPanel centro = new JPanel(new BorderLayout());
-		
-		centro.add(new JLabel(" "), BorderLayout.PAGE_START);
-		centro.add(mapaJogo, BorderLayout.CENTER);
-		centro.add(new JLabel(" "), BorderLayout.PAGE_END);
-		*/
-		
 		novoJogo = PainelNovoJogo.getInstance();
 		painelJogosEmEspera = PainelJogosEmEspera.getInstance();
 		
-		JPanel centro = new JPanel(new BorderLayout());
-		
+		centro = new JPanel(new BorderLayout());
 		
 		centro.add(new JLabel(" "), BorderLayout.PAGE_START);
 		centro.add(novoJogo, BorderLayout.CENTER);

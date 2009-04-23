@@ -4,19 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JPanel;
 
-import br.remotebattle.remote.JogoRemoto;
+import br.remotebattle.remote.implementacao.JogoRemoto;
 import br.remotebattle.ui.Main;
 
+@SuppressWarnings("serial")
 public class PainelJogosEmEspera extends JPanel {
 
 	private static PainelJogosEmEspera instance; 
-	private JComboBox comboJogosEmEspera;
 	private JButton botaoEntrarNoJogo;
+	private JList listaJogos;
 	
 	public static PainelJogosEmEspera getInstance(){
 		if(instance == null)
@@ -28,7 +28,7 @@ public class PainelJogosEmEspera extends JPanel {
 		super();
 		
 		try {
-			this.comboJogosEmEspera = new JComboBox(Main.getServicoJogos().getJogos().toArray());
+			this.listaJogos = new JList(Main.getServicoJogos().getJogos().keySet().toArray());
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}
@@ -43,40 +43,47 @@ public class PainelJogosEmEspera extends JPanel {
 
 		});
 		
-		this.add(comboJogosEmEspera);
+		this.add(this.listaJogos);
 		this.add(botaoEntrarNoJogo);
 		
 	}
 	
 	private void clickEntrarNoJogo() {
 		
-		try {
-			System.out.println("Tentando entrar no jogo...");
-			Main.setJogoRemoto(JogoRemoto.getJogoRemoto((String)this.comboJogosEmEspera.getSelectedItem()));
-			Main.getJogoRemoto().entrarNoJogo("Jogador2");
-			System.out.println("Entrou no jogo!");
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		String nomeJogoSelecionado = (String)this.listaJogos.getSelectedValue();
+		String nomeJogador = PainelNovoJogo.getInstance().getCampoNome().getText();
+		
+		if(	nomeJogoSelecionado!=null && nomeJogoSelecionado!="" &&
+			nomeJogador !=null && nomeJogador!=""){
+			
+			try {
+				System.out.println("Tentando entrar no jogo...");
+				Main.setJogoRemoto(JogoRemoto.getJogoRemoto(nomeJogoSelecionado));
+				Main.getJogoRemoto().entrarNoJogo(nomeJogador);
+				
+			} catch (RemoteException e) {
+				System.out.println("Erro ao entrar no jogo!");
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public static void atualizarComboJogosEmEspera(){
+	public void atualizarComboJogosEmEspera(){
 		try {
 			System.out.println("Atualizando a lista de jogos...");
-			instance.getComboJogosEmEspera().removeAllItems();
-			instance.getComboJogosEmEspera().setModel(new DefaultComboBoxModel(Main.getServicoJogos().getJogos().toArray()));
+			instance.getListaJogos().removeAll();
+			instance.getListaJogos().setListData(Main.getServicoJogos().getJogos().keySet().toArray());
 		} catch (RemoteException e) {
 			System.out.println("Não foi possivel reucperar a lista de jogos");
 			e.printStackTrace();
 		}
 	}
 
-	public JComboBox getComboJogosEmEspera() {
-		return comboJogosEmEspera;
+	public JList getListaJogos() {
+		return listaJogos;
 	}
 
-	public void setComboJogosEmEspera(JComboBox comboJogosEmEspera) {
-		this.comboJogosEmEspera = comboJogosEmEspera;
+	public void setListaJogos(JList listaJogos) {
+		this.listaJogos = listaJogos;
 	}
-	
 }

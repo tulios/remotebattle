@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class Mapa implements Serializable {
 
 	private Bloco[][] blocos;

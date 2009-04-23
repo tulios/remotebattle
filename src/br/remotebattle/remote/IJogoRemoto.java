@@ -3,7 +3,10 @@ package br.remotebattle.remote;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import br.remotebattle.dominio.Jogo;
+
 public interface IJogoRemoto extends Remote{
 
-	public void entrarNoJogo(String nomeJogador) throws RemoteException;
+	public String entrarNoJogo(String nomeJogador) throws RemoteException;
+	public Jogo getJogo() throws RemoteException;
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import br.remotebattle.dominio.enums.Dificuldade;
 
+@SuppressWarnings("serial")
 public class Jogo implements Serializable {
 
 	private Dificuldade dificuldade;
