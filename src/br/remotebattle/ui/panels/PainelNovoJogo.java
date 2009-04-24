@@ -14,6 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import sun.awt.windows.ThemeReader;
+
+import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.implementacao.JogoRemoto;
@@ -64,10 +67,11 @@ public class PainelNovoJogo extends JPanel{
 	private void clickNovoJogo() {
 				
 		String nomeJogador = this.campoNome.getText();
+		String nomeJogoRemoto = null;
 		
 		if(nomeJogador!=null && nomeJogador!=""){
 			try{
-				String nomeJogoRemoto = Main.getServicoJogos().criarNovoJogo(this.campoNome.getText(), (Dificuldade)this.comboDificuldades.getSelectedItem());
+				nomeJogoRemoto = Main.getServicoJogos().criarNovoJogo(nomeJogador, (Dificuldade)this.comboDificuldades.getSelectedItem());
 				IJogoRemoto jogoRemoto = JogoRemoto.getJogoRemoto(nomeJogoRemoto);
 				
 				if(jogoRemoto!=null){
@@ -80,6 +84,40 @@ public class PainelNovoJogo extends JPanel{
 			}
 		
 			PainelJogosEmEspera.getInstance().atualizarComboJogosEmEspera();
+			Main.bloquearTela();
+			
+			final String nomeJogo2 = nomeJogoRemoto;
+			
+			if(nomeJogoRemoto!=null && nomeJogoRemoto!=""){
+				Runnable verificador =  new Runnable(){
+					
+					public void run() {
+						
+						Jogador jogador2 = null;
+						try {
+							while(jogador2 == null){
+								jogador2 = JogoRemoto.getJogoRemoto(nomeJogo2).getJogo().getJogador2();
+								
+								try {
+									Thread.sleep(2000);
+								} catch (InterruptedException e) {
+									System.out.println("Não foi possivel fazer a thrad dormir...");
+									e.printStackTrace();
+								}
+							}
+							
+							Main.desbloquearTela();
+
+						} catch (RemoteException e) {
+							System.out.println("Não foi possivel recuperar o jogador 2...");
+							e.printStackTrace();
+						}
+					}
+					
+				};
+				Thread thread = new Thread(verificador);
+				thread.start();
+			}
 			
 			System.out.println("Novo jogo criado!");
 		} else {

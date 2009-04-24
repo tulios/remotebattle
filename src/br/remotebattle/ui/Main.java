@@ -8,9 +8,11 @@ import java.rmi.RemoteException;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.remotebattle.dominio.Jogo;
+import br.remotebattle.dominio.Jogador;
+import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.IServicoJogos;
+import br.remotebattle.ui.panels.GlassPanel;
 import br.remotebattle.ui.panels.Info;
 import br.remotebattle.ui.panels.MapaJogo;
 import br.remotebattle.ui.panels.PainelJogosEmEspera;
@@ -25,8 +27,18 @@ public class Main {
 	private static PainelNovoJogo novoJogo;
 	private static PainelJogosEmEspera painelJogosEmEspera;
 	private static JPanel centro;
+	private static GlassPanel glassPanel;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
+		Janela.getInstance().getRootPane().removeAll();
+		Janela.getInstance().getContentPane().add(Main.carregarMapaNavios(), BorderLayout.CENTER);
+		Janela.getInstance().validate();
+		Janela.getInstance().pack();
+		
+		Janela.getInstance().setVisible(true);
+	}
+	
+	public static void main_old(String[] args) {
 		
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new RMISecurityManager());
@@ -50,11 +62,29 @@ public class Main {
 		centro.add(novoJogo, BorderLayout.CENTER);
 		centro.add(painelJogosEmEspera, BorderLayout.PAGE_END);
 
+		Janela.getInstance().getContentPane().add(centro, BorderLayout.CENTER);
 		
-		Janela.getInstance().add(centro, BorderLayout.CENTER);
-		Janela.getInstance().pack();
-		
+		Janela.getInstance().pack();		
 		Janela.getInstance().setVisible(true);
+	}
+	
+	public static JPanel carregarMapaNavios() throws RemoteException{
+		JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+		
+		info = new Info();
+		container.add(info, BorderLayout.PAGE_START);
+		
+		JPanel centro = new JPanel();
+		centro.setLayout(new BorderLayout());
+		centro.add(new JLabel(" "), BorderLayout.PAGE_START);
+		centro.add(new MapaJogo(new Jogador("Teste", Dificuldade.DIFICIL)), BorderLayout.CENTER); //getJogoRemoto().getJogo().getJogador1()), BorderLayout.CENTER);
+		centro.add(new JLabel(" "), BorderLayout.PAGE_END);
+		
+		container.add(centro, BorderLayout.CENTER);
+		container.validate();
+		
+		return container;
 	}
 	
 	public static Info getInfo() {
@@ -75,5 +105,27 @@ public class Main {
 
 	public static void setJogoRemoto(IJogoRemoto jogoRemoto) {
 		Main.jogoRemoto = jogoRemoto;
+	}
+	
+	public static void bloquearTela(){
+		if(Main.glassPanel == null)
+			Main.glassPanel = new GlassPanel();
+		
+		Janela.getInstance().setGlassPane(Main.glassPanel);
+		Main.glassPanel.setVisible(true);
+		
+	}
+	
+	public static void desbloquearTela() throws RemoteException{
+		if(Main.glassPanel == null)
+			Main.glassPanel = new GlassPanel();
+		
+		Janela.getInstance().setGlassPane(Main.glassPanel);
+		Main.glassPanel.setVisible(false);
+		
+		Janela.getInstance().getRootPane().removeAll();
+		Janela.getInstance().add(Main.carregarMapaNavios(), BorderLayout.CENTER);
+		Janela.getInstance().validate();
+		Janela.getInstance().pack();
 	}
 }
