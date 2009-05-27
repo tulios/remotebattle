@@ -27,7 +27,6 @@ public class IniciarJogoController implements IController{
 	
 	@Override
 	public void execute(){
-		
 	}
 	
 }
