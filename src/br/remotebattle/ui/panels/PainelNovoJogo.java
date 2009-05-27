@@ -14,8 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import sun.awt.windows.ThemeReader;
-
 import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;

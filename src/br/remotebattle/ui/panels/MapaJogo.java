@@ -3,14 +3,18 @@ package br.remotebattle.ui.panels;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import br.remotebattle.controller.IniciarJogoController;
 import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.TipoBarco;
-import br.remotebattle.ui.Main;
+import br.remotebattle.ui.UIMain;
 import br.remotebattle.ui.panels.componentes.BlocoGrafico;
 
 @SuppressWarnings("serial")
@@ -20,12 +24,22 @@ public class MapaJogo extends JPanel {
 	private BlocoGrafico[][] blocos;
 	private Jogador jogador;
 
+	private JButton iniciarJogo;
+	
 	private BlocoGrafico root;
 	private Color corPadraoBotao =  Color.WHITE;
-
+	
+	private IniciarJogoController controller;
+	
+	/**
+	 * Construtor	
+	 * @param jogador - {@link Jogador}
+	 */
 	public MapaJogo(Jogador jogador){
 		this.jogador = jogador;
 		this.setLayout(new GridBagLayout());
+		
+		controller = new IniciarJogoController();
 
 		inicializarBlocosGraficos();
 		apresentarMapaGrafico();
@@ -280,23 +294,42 @@ public class MapaJogo extends JPanel {
 		atualizarInformacoesSobreBarcos(tipo);
 		pintarBarco(partesBarco, tipo);
 		getRoot().setMarcado(true);
+		
+		//descobre quando o usuário colocou todos os barcos
+		if (UIMain.getInfo().getQuantidadeBarcosAdiconados() == TipoBarco.getQuantidadeDisponivel()){
+			iniciarJogo = new JButton("Iniciar jogo");
+			iniciarJogo.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					controller.execute();
+				}
+			});
+			UIMain.getRodape().add(iniciarJogo);
+			UIMain.getRodape().validate();
+		}
 	}
 
 	private void pintarBarco(List<BlocoGrafico> partesBarco, TipoBarco tipo) {
+		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
+		
 		for (BlocoGrafico bloco : partesBarco){
 			if (!bloco.isMarcado()){
 				bloco.setBackground(tipo.getCor());
 				bloco.setMarcado(true);
+				
+				lista.add(bloco);
 			}
 		}
+		
+		controller.gerarBarco(lista);
 	}
 
 	private boolean aindaPossoAdicionarBarco(TipoBarco tipo) {
-		return tipo.getQuantidade() > Main.getInfo().getQuantidadeBarco(tipo);
+		return tipo.getQuantidade() > UIMain.getInfo().getQuantidadeBarco(tipo);
 	}
 
 	private void atualizarInformacoesSobreBarcos(TipoBarco tipo) {
-		Main.getInfo().incrementarQuantidadeBarco(tipo);
+		UIMain.getInfo().incrementarQuantidadeBarco(tipo);
 	}
 
 	private void liberarMapa(){

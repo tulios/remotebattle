@@ -31,6 +31,17 @@ public enum TipoBarco {
 		return null;
 	}
 	
+	public static TipoBarco newInstance(final Color cor){
+		
+		for(TipoBarco tipo : TipoBarco.values()){
+			
+			if(tipo.getCor() == cor)
+				return tipo;
+		}
+		
+		return null;
+	}
+	
 	public static int getQuantidadeDisponivel(){
 		int quantidadeDisponivel = 0;
 		

@@ -42,15 +42,22 @@ public class Info extends JPanel{
 		
 		adicionarBarcosAoPainel(cons);
 	}
+	
+	public int getQuantidadeBarcosAdiconados(){
+		int total = 0;
+		for (TipoBarco tipo : TipoBarco.values()){
+			JLabel barco = this.getBarco(tipo);
+			total += Integer.parseInt(barco.getText());
+		}
+		return total;
+	}
 
-	public int incrementarQuantidadeBarco(TipoBarco tipo){
+	public void incrementarQuantidadeBarco(TipoBarco tipo){
 		JLabel barco = this.getBarco(tipo);
 		
 		int valor = Integer.parseInt(barco.getText()) + 1;
 		barco.setText(String.valueOf(valor));
 		this.validate();
-		
-		return valor;
 	}
 	
 	public int getQuantidadeBarco(TipoBarco tipo){
