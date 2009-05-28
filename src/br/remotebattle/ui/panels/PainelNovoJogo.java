@@ -108,7 +108,7 @@ public class PainelNovoJogo extends JPanel{
 				clickNovoJogo();
 			}
 		});
-		
+
 		this.botaoEntrarNoJogo.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -122,18 +122,22 @@ public class PainelNovoJogo extends JPanel{
 		String nomeJogoSelecionado = (String)this.listaJogos.getSelectedValue();
 		String nomeJogador = PainelNovoJogo.getInstance().getCampoNome().getText();
 
-		if(	nomeJogoSelecionado!=null && nomeJogoSelecionado!="" &&
-				nomeJogador !=null && nomeJogador!=""){
+		if(	nomeJogoSelecionado!=null && nomeJogoSelecionado!="" && nomeJogador !=null && nomeJogador!=""){
 
 			try {
 				System.out.println("Tentando entrar no jogo...");
 				Main.setJogoRemoto(JogoRemoto.getJogoRemoto(nomeJogoSelecionado));
 				Main.getJogoRemoto().entrarNoJogo(nomeJogador);
 
+				Main.abrirPainelPosicionamentoBarcos();
+
 			} catch (RemoteException e) {
 				System.out.println("Erro ao entrar no jogo!");
 				e.printStackTrace();
 			}
+
+		}else{
+			JOptionPane.showMessageDialog(this, "Selecione um jogo e preencha seu nome", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -146,14 +150,6 @@ public class PainelNovoJogo extends JPanel{
 			System.out.println("Não foi possivel reucperar a lista de jogos");
 			e.printStackTrace();
 		}
-	}
-	
-	public JList getListaJogos() {
-		return listaJogos;
-	}
-
-	public void setListaJogos(JList listaJogos) {
-		this.listaJogos = listaJogos;
 	}
 
 	private void clickNovoJogo() {
@@ -176,11 +172,11 @@ public class PainelNovoJogo extends JPanel{
 			}
 
 			PainelNovoJogo.getInstance().atualizarComboJogosEmEspera();
-			Main.bloquearTela();
+			Main.aguardar();
 
 			final String nomeJogo2 = nomeJogoRemoto;
 
-			if(nomeJogoRemoto!=null && nomeJogoRemoto!=""){
+			if(nomeJogoRemoto!=null && nomeJogoRemoto.length() > 0){
 				Runnable verificador =  new Runnable(){
 
 					public void run() {
@@ -198,7 +194,7 @@ public class PainelNovoJogo extends JPanel{
 								}
 							}
 
-							Main.desbloquearTela();
+							Main.abrirPainelPosicionamentoBarcos();
 
 						} catch (RemoteException e) {
 							System.out.println("Não foi possivel recuperar o jogador 2...");
@@ -209,11 +205,10 @@ public class PainelNovoJogo extends JPanel{
 				};
 				Thread thread = new Thread(verificador);
 				thread.start();
+				System.out.println("Novo jogo criado!");
+			} else {
+				JOptionPane.showMessageDialog(this, "Nome de jogador inválido", "Erro", JOptionPane.ERROR_MESSAGE);
 			}
-
-			System.out.println("Novo jogo criado!");
-		} else {
-			JOptionPane.showMessageDialog(this, "Nome de jogador inválido", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -243,6 +238,14 @@ public class PainelNovoJogo extends JPanel{
 
 	public void setBotaoNovoJogo(JButton botaoNovoJogo) {
 		this.botaoNovoJogo = botaoNovoJogo;
+	}
+
+	public JList getListaJogos() {
+		return listaJogos;
+	}
+
+	public void setListaJogos(JList listaJogos) {
+		this.listaJogos = listaJogos;
 	}
 
 }

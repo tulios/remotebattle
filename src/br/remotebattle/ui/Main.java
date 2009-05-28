@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.IServicoJogos;
-import br.remotebattle.ui.panels.GlassPanel;
 import br.remotebattle.ui.panels.Info;
 import br.remotebattle.ui.panels.MapaJogo;
+import br.remotebattle.ui.panels.PainelAguardandoOponente;
 import br.remotebattle.ui.panels.PainelNovoJogo;
 
 public class Main {
@@ -22,7 +22,6 @@ public class Main {
 	private static IJogoRemoto jogoRemoto;
 	private static PainelNovoJogo novoJogo;
 	private static JPanel centro;
-	private static GlassPanel glassPanel;
 	
 	public static void main(String[] args) {
 		
@@ -71,22 +70,15 @@ public class Main {
 		Main.jogoRemoto = jogoRemoto;
 	}
 	
-	public static void bloquearTela(){
-		if(Main.glassPanel == null)
-			Main.glassPanel = new GlassPanel();
+	public static void aguardar(){
+		Janela.getInstance().getContentPane().removeAll();
 		
-		Janela.getInstance().setGlassPane(Main.glassPanel);
-		Main.glassPanel.setVisible(true);
-		
+		Janela.getInstance().add(new PainelAguardandoOponente("Aguardando oponente"), BorderLayout.CENTER);
+		Janela.getInstance().validate();
+		Janela.getInstance().pack();
 	}
 	
-	public static void desbloquearTela() throws RemoteException{
-		if(Main.glassPanel == null)
-			Main.glassPanel = new GlassPanel();
-		
-		Janela.getInstance().setGlassPane(Main.glassPanel);
-		Main.glassPanel.setVisible(false);
-		
+	public static void abrirPainelPosicionamentoBarcos() throws RemoteException{
 		//para o GC
 		Janela.getInstance().setVisible(false);
 		//cria uma nova janela
