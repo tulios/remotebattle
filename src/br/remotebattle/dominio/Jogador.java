@@ -24,6 +24,10 @@ public class Jogador implements Serializable {
 		this.nome = nome;
 	}
 	
+	public void setMapa(Mapa mapa) {
+		this.mapa = mapa;
+	}
+	
 	public Mapa getMapa() {
 		return mapa;
 	}

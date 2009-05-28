@@ -1,10 +1,11 @@
 package br.remotebattle.dominio;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.remotebattle.dominio.enums.TipoBarco;
 
-public class Barco {
+public class Barco implements Serializable{
 
 	private List<Bloco> blocos;
 	

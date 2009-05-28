@@ -27,12 +27,12 @@ public class MapaJogo extends JPanel {
 	private Jogador jogador;
 
 	private JButton iniciarJogo;
-	
+
 	private BlocoGrafico root;
 	private Color corPadraoBotao =  Color.WHITE;
-	
+
 	private IniciarJogoController controller;
-	
+
 	/**
 	 * Construtor	
 	 * @param jogador - {@link Jogador}
@@ -40,7 +40,7 @@ public class MapaJogo extends JPanel {
 	public MapaJogo(Jogador jogador){
 		this.jogador = jogador;
 		this.setLayout(new GridBagLayout());
-		
+
 		controller = new IniciarJogoController();
 
 		inicializarBlocosGraficos();
@@ -122,21 +122,40 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico[][] getMapaGrafico() {
 		return blocos;
 	}
-	
+
 	/*
 	 * 
 	 * Ações
 	 * 
 	 */
-	
+
 	private void clickIniciarJogo(){
 		Main.aguardar();
 		controller.execute();
+
+		Runnable runnable = new Runnable(){
+			@Override
+			public void run() {
+				try{
+					while (Main.getJogoRemoto().getJogador().getOponente().getMapa().getBarcos() != null &&
+							Main.getJogoRemoto().getJogador().getOponente().getMapa().getBarcos().size() <= 0){
+
+						Thread.sleep(3*1000);
+					}
+					
+					Janela.getInstance().getContentPane().removeAll();
+					UIMain.bindMapa();
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		};
 		
-		Janela.getInstance().getContentPane().removeAll();
-		UIMain.bindMapa();
+		Thread t = new Thread(runnable);
+		t.start();
+
 	}
-	
+
 	/*
 	 * 
 	 * 
@@ -152,7 +171,7 @@ public class MapaJogo extends JPanel {
 	public boolean isRoot(BlocoGrafico bloco){
 		return bloco.getCoordX() == getRoot().getCoordX() && bloco.getCoordY() == getRoot().getCoordY();
 	}
-	
+
 	public boolean isMesmaLinhaDoRoot(BlocoGrafico bloco){
 		return bloco.getCoordY() == root.getCoordY();
 	}
@@ -164,7 +183,7 @@ public class MapaJogo extends JPanel {
 	public boolean isAcimaDoRoot(BlocoGrafico bloco){
 		return bloco.getCoordY() < root.getCoordY();
 	}
-	
+
 	private BlocoGrafico getBlocoADireita(BlocoGrafico blocoAtual){
 
 		if(temVizinhoADireita(blocoAtual))
@@ -296,13 +315,13 @@ public class MapaJogo extends JPanel {
 	private void preencherBlocosDoBarcoComACor(BlocoGrafico blocoSelecionado){
 		List<BlocoGrafico> partesBarco = getPartesBarco(blocoSelecionado);
 		TipoBarco tipo = TipoBarco.newInstance(partesBarco.size());
-		
+
 		if (aindaPossoAdicionarBarco(tipo)){
 			marcarBarco(partesBarco, tipo);
 		}else{
 			getRoot().setMarcado(false);
 		}
-		
+
 		getRoot().setEnabled(true);				
 	}
 
@@ -310,13 +329,13 @@ public class MapaJogo extends JPanel {
 		atualizarInformacoesSobreBarcos(tipo);
 		pintarBarco(partesBarco, tipo);
 		getRoot().setMarcado(true);
-		
+
 		//descobre quando o usuário colocou todos os barcos
 		if (isTerminouDeAdicionarOsBarcos()){
 			adicionarBotaoDeIniciarJogo();
 		}
 	}
-	
+
 	private void adicionarBotaoDeIniciarJogo() {
 		iniciarJogo = new JButton("Iniciar jogo");
 		iniciarJogo.addActionListener(new ActionListener(){
@@ -335,16 +354,16 @@ public class MapaJogo extends JPanel {
 
 	private void pintarBarco(List<BlocoGrafico> partesBarco, TipoBarco tipo) {
 		List<BlocoGrafico> lista = new ArrayList<BlocoGrafico>();
-		
+
 		for (BlocoGrafico bloco : partesBarco){
 			if (!bloco.isMarcado()){
 				bloco.setBackground(tipo.getCor());
 				bloco.setMarcado(true);
-				
+
 				lista.add(bloco);
 			}
 		}
-		
+
 		controller.gerarBarco(lista);
 	}
 

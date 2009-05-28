@@ -1,6 +1,8 @@
 package br.remotebattle.dominio;
 
-public class Coordenada {
+import java.io.Serializable;
+
+public class Coordenada implements Serializable{
 
 	private int x;
 	private int y;

@@ -16,6 +16,10 @@ public class Mapa implements Serializable {
 		barcos = new ArrayList<Barco>();
 	}
 	
+	public Mapa(List<Barco> barcos){
+		this.barcos = barcos;
+	}
+	
 	private void inicializarBlocos(){
 		int x = 0;
 		int y = 0;

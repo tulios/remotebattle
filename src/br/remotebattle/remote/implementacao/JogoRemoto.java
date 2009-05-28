@@ -5,9 +5,12 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
+import br.remotebattle.dominio.Barco;
 import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.Jogo;
+import br.remotebattle.dominio.Mapa;
 import br.remotebattle.remote.IJogoRemoto;
 
 @SuppressWarnings("serial")
@@ -69,6 +72,10 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 		
 		return null;
 		
+	}
+	
+	public void iniciarJogo(List<Barco> barcos) throws RemoteException{
+		this.jogador.setMapa(new Mapa(barcos));
 	}
 	
 	public static IJogoRemoto getJogoRemoto(String nomeJogoRemoto){

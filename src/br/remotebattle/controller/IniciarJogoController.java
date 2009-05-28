@@ -1,10 +1,12 @@
 package br.remotebattle.controller;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.remotebattle.dominio.Barco;
 import br.remotebattle.dominio.Bloco;
+import br.remotebattle.ui.Main;
 import br.remotebattle.ui.panels.componentes.BlocoGrafico;
 
 public class IniciarJogoController implements IController{
@@ -31,6 +33,11 @@ public class IniciarJogoController implements IController{
 	
 	@Override
 	public void execute(){
+		try {
+			Main.getJogoRemoto().iniciarJogo(barcos);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
