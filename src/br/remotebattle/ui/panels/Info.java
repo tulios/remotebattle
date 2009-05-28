@@ -35,8 +35,8 @@ public class Info extends JPanel{
 		String jogador = null;
 		String oponente = null;
 		try {
-			jogador = Main.getJogoRemoto().getJogo().getJogador1().getNome();
-			oponente = Main.getJogoRemoto().getJogo().getJogador2().getNome();
+			jogador = Main.getJogoRemoto().getJogador().getNome();
+			oponente = Main.getJogoRemoto().getJogador().getOponente().getNome();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

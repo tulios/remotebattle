@@ -16,7 +16,7 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 	private Jogo jogo;
 	private Jogador jogador;
 	
-	protected JogoRemoto(Jogo jogo) throws RemoteException {
+	public JogoRemoto(Jogo jogo) throws RemoteException {
 		super();
 		this.jogo = jogo;
 		
@@ -99,6 +99,14 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 		this.jogo = jogo;
 	}
 	
+	public Jogador getJogador() throws RemoteException{
+		return jogador;
+	}
+	
+	public void setJogador(Jogador jogador) {
+		this.jogador = jogador;
+	}
+
 	public String toString(){
 		String saida = "Jogo: \n"+
 						"Jogador1: "+jogo.getJogador1()+"\n"+
@@ -109,4 +117,5 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 		
 		return saida;
 	}
+
 }
