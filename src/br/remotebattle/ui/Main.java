@@ -5,7 +5,6 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.remotebattle.remote.IJogoRemoto;
@@ -43,15 +42,12 @@ public class Main {
 		}
 
 		novoJogo = PainelNovoJogo.getInstance();
-		painelJogosEmEspera = PainelJogosEmEspera.getInstance();
-		
 		centro = new JPanel(new BorderLayout());
 		
-		centro.add(new JLabel(" "), BorderLayout.PAGE_START);
 		centro.add(novoJogo, BorderLayout.CENTER);
-		centro.add(painelJogosEmEspera, BorderLayout.PAGE_END);
 
 		Janela.getInstance().getContentPane().add(centro, BorderLayout.CENTER);
+		Janela.getInstance().setResizable(false);
 		
 		Janela.getInstance().pack();		
 		Janela.getInstance().setVisible(true);
