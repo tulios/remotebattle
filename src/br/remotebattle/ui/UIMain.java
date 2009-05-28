@@ -19,7 +19,11 @@ public class UIMain {
 	public static void main(String[] args) {
 		
 		Jogo jogo = new Jogo("Túlio", Dificuldade.DIFICIL);
+		init(jogo);
 		
+	}
+	
+	public static void init(Jogo jogo){
 		info = new Info();
 		Janela.getInstance().add(info, BorderLayout.PAGE_START);
 		
@@ -34,6 +38,7 @@ public class UIMain {
 		centro.add(rodape, BorderLayout.PAGE_END);
 		
 		Janela.getInstance().add(centro, BorderLayout.CENTER);
+		Janela.getInstance().validate();
 		Janela.getInstance().pack();
 		
 		Janela.getInstance().setVisible(true);

@@ -78,7 +78,7 @@ public class PainelNovoJogo extends JPanel{
 			}
 			catch(RemoteException exception){
 				exception.printStackTrace();
-				JOptionPane.showMessageDialog(this,exception.getMessage());
+				JOptionPane.showMessageDialog(this,exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 			}
 		
 			PainelJogosEmEspera.getInstance().atualizarComboJogosEmEspera();
@@ -99,7 +99,7 @@ public class PainelNovoJogo extends JPanel{
 								try {
 									Thread.sleep(2000);
 								} catch (InterruptedException e) {
-									System.out.println("Não foi possivel fazer a thrad dormir...");
+									System.out.println("Não foi possivel fazer a thread dormir...");
 									e.printStackTrace();
 								}
 							}
@@ -119,7 +119,7 @@ public class PainelNovoJogo extends JPanel{
 			
 			System.out.println("Novo jogo criado!");
 		} else {
-			JOptionPane.showMessageDialog(this, "Nome de jogador inválido");
+			JOptionPane.showMessageDialog(this, "Nome de jogador inválido", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

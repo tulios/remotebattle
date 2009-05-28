@@ -8,8 +8,6 @@ import java.rmi.RemoteException;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.remotebattle.dominio.Jogador;
-import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.IServicoJogos;
 import br.remotebattle.ui.panels.GlassPanel;
@@ -59,25 +57,6 @@ public class Main {
 		Janela.getInstance().setVisible(true);
 	}
 	
-	public static JPanel carregarMapaNavios() throws RemoteException{
-		JPanel container = new JPanel();
-		container.setLayout(new BorderLayout());
-		
-		info = new Info();
-		container.add(info, BorderLayout.PAGE_START);
-		
-		JPanel centro = new JPanel();
-		centro.setLayout(new BorderLayout());
-		centro.add(new JLabel(" "), BorderLayout.PAGE_START);
-		centro.add(new MapaJogo(new Jogador("Teste", Dificuldade.DIFICIL)), BorderLayout.CENTER); //getJogoRemoto().getJogo().getJogador1()), BorderLayout.CENTER);
-		centro.add(new JLabel(" "), BorderLayout.PAGE_END);
-		
-		container.add(centro, BorderLayout.CENTER);
-		container.validate();
-		
-		return container;
-	}
-	
 	public static Info getInfo() {
 		return info;
 	}
@@ -114,9 +93,11 @@ public class Main {
 		Janela.getInstance().setGlassPane(Main.glassPanel);
 		Main.glassPanel.setVisible(false);
 		
-		Janela.getInstance().getRootPane().removeAll();
-		Janela.getInstance().add(Main.carregarMapaNavios(), BorderLayout.CENTER);
-		Janela.getInstance().validate();
-		Janela.getInstance().pack();
+		//para o GC
+		Janela.getInstance().setVisible(false);
+		//cria uma nova janela
+		Janela.getInstance(true);
+		System.out.println("Tela limpa, gerando interface de jogo...");
+		UIMain.init(jogoRemoto.getJogo());			
 	}
 }

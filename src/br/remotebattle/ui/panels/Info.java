@@ -5,17 +5,21 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.rmi.RemoteException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.remotebattle.dominio.enums.TipoBarco;
+import br.remotebattle.ui.Main;
 
 @SuppressWarnings("serial")
 public class Info extends JPanel{
 	
 	private JLabel labelBarcosUtilizados;
 	private JPanel[] barcos;
+	
+	private JLabel infoJogadores;
 	
 	public Info(){
 		this.setLayout(new GridBagLayout());
@@ -28,6 +32,18 @@ public class Info extends JPanel{
 		GridBagConstraints cons = new GridBagConstraints();
 		cons.insets = new Insets(1,1,1,1);
 		
+		String jogador = null;
+		String oponente = null;
+		try {
+			jogador = Main.getJogoRemoto().getJogo().getJogador1().getNome();
+			oponente = Main.getJogoRemoto().getJogo().getJogador2().getNome();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+		infoJogadores = new JLabel("Jogador: "+jogador+" => Oponente: "+oponente);
+		infoJogadores.setForeground(Color.WHITE);
+		
 		labelBarcosUtilizados = new JLabel("Barcos utilizados:");
 		labelBarcosUtilizados.setForeground(Color.WHITE);
 		
@@ -36,6 +52,11 @@ public class Info extends JPanel{
 		cons.gridwidth = 4;
 		cons.anchor = GridBagConstraints.LINE_START;
 		cons.gridy = 0;
+		cons.gridx = 0;
+		
+		this.add(infoJogadores, cons);
+		
+		cons.gridy = 1;
 		cons.gridx = 0;
 		
 		this.add(labelBarcosUtilizados, cons);
@@ -77,7 +98,7 @@ public class Info extends JPanel{
 	private void adicionarBarcosAoPainel(GridBagConstraints cons) {
 		int i = 0;
 		for (int y = 0; y < TipoBarco.values().length; y++){
-			cons.gridy = 1;			
+			cons.gridy = 2;			
 			cons.gridx = i;
 			i += 4;
 			
