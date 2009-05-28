@@ -22,6 +22,7 @@ import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.implementacao.JogoRemoto;
+import br.remotebattle.remote.implementacao.ServicoJogos;
 import br.remotebattle.ui.Main;
 
 @SuppressWarnings("serial")
@@ -126,9 +127,10 @@ public class PainelNovoJogo extends JPanel{
 
 			try {
 				System.out.println("Tentando entrar no jogo...");
-				Main.setJogoRemoto(JogoRemoto.getJogoRemoto(nomeJogoSelecionado));
-				Main.getJogoRemoto().entrarNoJogo(nomeJogador);
-
+				IJogoRemoto jogoRemotoOponente = JogoRemoto.getJogoRemoto(nomeJogoSelecionado);
+				String nomeMeuJogoRemoto = jogoRemotoOponente.entrarNoJogo(nomeJogador);
+				Main.setJogoRemoto(JogoRemoto.getJogoRemoto(nomeMeuJogoRemoto));
+				
 				Main.abrirPainelPosicionamentoBarcos();
 
 			} catch (RemoteException e) {
