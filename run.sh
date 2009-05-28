@@ -1,3 +1,4 @@
+pkill rmiregistry
 echo "Compilando remoteBattle..."
 rm -rf compilado
 ant
@@ -18,5 +19,4 @@ echo "subindo servidor..."
 cd $DIRETORIO_LOCAL
 echo "diretorio: " $(pwd)
 chmod 777 *.sh
-./server-run.sh &
-echo "servidor no ar!"
+./server-run.sh
