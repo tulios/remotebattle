@@ -14,6 +14,7 @@ import br.remotebattle.ui.panels.MapaJogo;
 public class UIMain {
 	private static Info info;
 	private static MapaJogo mapaJogo;
+	private static MapaJogo mapaOponente;
 	private static JPanel rodape;
 	
 	public static void main(String[] args) {
@@ -21,6 +22,27 @@ public class UIMain {
 		Jogo jogo = new Jogo("Túlio", Dificuldade.DIFICIL);
 		init(jogo);
 		
+	}
+	
+	public static void bindMapa(){
+		Janela.getInstance().add(info, BorderLayout.PAGE_START);
+		
+		JPanel centro = new JPanel(new BorderLayout());
+		
+		mapaOponente = new MapaJogo(mapaJogo.getJogador());
+		
+		centro.add(mapaJogo, BorderLayout.WEST);
+		centro.add(mapaOponente, BorderLayout.EAST);
+		
+		rodape = new JPanel();
+		rodape.setPreferredSize(new Dimension(40,40));
+		centro.add(rodape, BorderLayout.PAGE_END);
+		
+		Janela.getInstance().add(centro, BorderLayout.CENTER);
+		Janela.getInstance().validate();
+		Janela.getInstance().pack();
+		
+		Janela.getInstance().setVisible(true);
 	}
 	
 	public static void init(Jogo jogo){
@@ -50,6 +72,10 @@ public class UIMain {
 	
 	public static MapaJogo getMapaJogo() {
 		return UIMain.mapaJogo;
+	}
+	
+	public static MapaJogo getMapaOponente() {
+		return mapaOponente;
 	}
 	
 	public static JPanel getRodape(){

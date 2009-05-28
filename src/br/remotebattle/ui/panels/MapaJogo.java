@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import br.remotebattle.controller.IniciarJogoController;
 import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.TipoBarco;
+import br.remotebattle.ui.Janela;
+import br.remotebattle.ui.Main;
 import br.remotebattle.ui.UIMain;
 import br.remotebattle.ui.panels.componentes.BlocoGrafico;
 
@@ -120,7 +122,21 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico[][] getMapaGrafico() {
 		return blocos;
 	}
-
+	
+	/*
+	 * 
+	 * Ações
+	 * 
+	 */
+	
+	private void clickIniciarJogo(){
+		Main.aguardar();
+		controller.execute();
+		
+		Janela.getInstance().getContentPane().removeAll();
+		UIMain.bindMapa();
+	}
+	
 	/*
 	 * 
 	 * 
@@ -296,17 +312,25 @@ public class MapaJogo extends JPanel {
 		getRoot().setMarcado(true);
 		
 		//descobre quando o usuário colocou todos os barcos
-		if (UIMain.getInfo().getQuantidadeBarcosAdiconados() == TipoBarco.getQuantidadeDisponivel()){
-			iniciarJogo = new JButton("Iniciar jogo");
-			iniciarJogo.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					controller.execute();
-				}
-			});
-			UIMain.getRodape().add(iniciarJogo);
-			UIMain.getRodape().validate();
+		if (isTerminouDeAdicionarOsBarcos()){
+			adicionarBotaoDeIniciarJogo();
 		}
+	}
+	
+	private void adicionarBotaoDeIniciarJogo() {
+		iniciarJogo = new JButton("Iniciar jogo");
+		iniciarJogo.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clickIniciarJogo();
+			}
+		});
+		UIMain.getRodape().add(iniciarJogo);
+		UIMain.getRodape().validate();
+	}
+
+	private boolean isTerminouDeAdicionarOsBarcos() {
+		return UIMain.getInfo().getQuantidadeBarcosAdiconados() == TipoBarco.getQuantidadeDisponivel();
 	}
 
 	private void pintarBarco(List<BlocoGrafico> partesBarco, TipoBarco tipo) {

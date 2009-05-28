@@ -25,6 +25,10 @@ public class IniciarJogoController implements IController{
 		barcos.add(new Barco(blocos));
 	}
 	
+	public List<Barco> getBarcos() {
+		return barcos;
+	}
+	
 	@Override
 	public void execute(){
 	}

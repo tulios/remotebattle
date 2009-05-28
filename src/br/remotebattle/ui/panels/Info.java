@@ -95,18 +95,7 @@ public class Info extends JPanel{
 		return null;
 	}
 	
-	private void adicionarBarcosAoPainel(GridBagConstraints cons) {
-		int i = 0;
-		for (int y = 0; y < TipoBarco.values().length; y++){
-			cons.gridy = 2;			
-			cons.gridx = i;
-			i += 4;
-			
-			this.add(barcos[y], cons);
-		}
-	}
-
-	private void inicializarBarcos() {
+	public void inicializarBarcos() {
 		barcos = new JPanel[TipoBarco.values().length];
 		
 		int i = 0;
@@ -124,6 +113,17 @@ public class Info extends JPanel{
 		}
 	}
 	
+	private void adicionarBarcosAoPainel(GridBagConstraints cons) {
+		int i = 0;
+		for (int y = 0; y < TipoBarco.values().length; y++){
+			cons.gridy = 2;			
+			cons.gridx = i;
+			i += 4;
+			
+			this.add(barcos[y], cons);
+		}
+	}
+
 	private JLabel newJLabel(String texto, Color cor){
 		JLabel label = new JLabel(texto);
 		label.setForeground(cor);
