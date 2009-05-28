@@ -1,0 +1,8 @@
+1 - pasta bin (recompile tudo antes)
+2 - compilar classes remotas
+	rmic br.remotebattle.remote.implementacao.JogoRemoto
+	rmic br.remotebattle.remote.implementacao.ServicoJogos
+
+3 - subir rmiregistry
+4 - subir servidor
+5 - subir cliente

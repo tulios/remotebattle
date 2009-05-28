@@ -2,5 +2,5 @@ grant {
     permission java.net.SocketPermission "*:1024-65535",
         "connect,accept";
     permission java.io.FilePermission
-        "/home/pedro/workspace/remotebattle/bin/-", "read";
+        "./-", "read";
 };

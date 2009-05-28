@@ -29,16 +29,7 @@ public class Main {
 	private static JPanel centro;
 	private static GlassPanel glassPanel;
 	
-	public static void main(String[] args) throws RemoteException {
-		Janela.getInstance().getRootPane().removeAll();
-		Janela.getInstance().getContentPane().add(Main.carregarMapaNavios(), BorderLayout.CENTER);
-		Janela.getInstance().validate();
-		Janela.getInstance().pack();
-		
-		Janela.getInstance().setVisible(true);
-	}
-	
-	public static void main_old(String[] args) {
+	public static void main(String[] args) {
 		
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new RMISecurityManager());
