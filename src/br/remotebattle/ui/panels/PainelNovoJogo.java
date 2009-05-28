@@ -175,7 +175,7 @@ public class PainelNovoJogo extends JPanel{
 				JOptionPane.showMessageDialog(this,exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 			}
 
-			PainelJogosEmEspera.getInstance().atualizarComboJogosEmEspera();
+			PainelNovoJogo.getInstance().atualizarComboJogosEmEspera();
 			Main.bloquearTela();
 
 			final String nomeJogo2 = nomeJogoRemoto;

@@ -12,7 +12,6 @@ import br.remotebattle.remote.IServicoJogos;
 import br.remotebattle.ui.panels.GlassPanel;
 import br.remotebattle.ui.panels.Info;
 import br.remotebattle.ui.panels.MapaJogo;
-import br.remotebattle.ui.panels.PainelJogosEmEspera;
 import br.remotebattle.ui.panels.PainelNovoJogo;
 
 public class Main {
@@ -22,7 +21,6 @@ public class Main {
 	private static IServicoJogos servicoJogos;
 	private static IJogoRemoto jogoRemoto;
 	private static PainelNovoJogo novoJogo;
-	private static PainelJogosEmEspera painelJogosEmEspera;
 	private static JPanel centro;
 	private static GlassPanel glassPanel;
 	
