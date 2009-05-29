@@ -7,7 +7,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.Set;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,7 +24,7 @@ import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.remote.IJogoRemoto;
 import br.remotebattle.remote.implementacao.JogoRemoto;
-import br.remotebattle.remote.implementacao.ServicoJogos;
+import br.remotebattle.ui.Janela;
 import br.remotebattle.ui.Main;
 
 @SuppressWarnings("serial")
@@ -36,12 +38,56 @@ public class PainelNovoJogo extends JPanel{
 
 	private JButton botaoEntrarNoJogo;
 	private JList listaJogos;
+	private DefaultListModel listModel;
 
+	private static boolean continuarMonitorando = true;
+	
 	public static PainelNovoJogo getInstance(){
 		if(instance == null)
 			instance = new PainelNovoJogo();
 
 		return instance;
+	}
+
+	private void startThreadMonitor(){
+		Runnable runnable = new Runnable(){
+			@Override
+			public void run() {
+				while (continuarMonitorando){
+					try {
+						System.out.println("procurando jogos...");
+						atualizarListModel();
+						Janela.getInstance().validate();
+
+						Thread.sleep(1*1000);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		};
+
+		Thread t = new Thread(runnable);
+		t.start();
+	}
+	
+	private void atualizarListModel(){
+		try{
+			if (listModel == null){
+				listModel = new DefaultListModel();
+			}
+			
+			Set<String> jogos = Main.getServicoJogos().getJogos().keySet();
+			
+			for (String s : jogos){
+				if (!listModel.contains(s)){
+					listModel.addElement(s);
+				}
+			}
+			System.out.println(jogos.size()+" encontrados!");
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	private PainelNovoJogo(){
@@ -51,11 +97,9 @@ public class PainelNovoJogo extends JPanel{
 		botaoNovoJogo = new JButton("Novo jogo");
 		botaoEntrarNoJogo = new JButton("Entrar no jogo");
 
-		try {
-			this.listaJogos = new JList(Main.getServicoJogos().getJogos().keySet().toArray());
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
-		}
+		atualizarListModel();
+		listaJogos = new JList(listModel);
+		
 		JScrollPane scroll = new JScrollPane(listaJogos);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setPreferredSize(new Dimension(180,120));
@@ -116,6 +160,8 @@ public class PainelNovoJogo extends JPanel{
 				clickEntrarNoJogo();
 			}
 		});
+
+		startThreadMonitor();
 	}
 
 	private void clickEntrarNoJogo() {
@@ -130,7 +176,8 @@ public class PainelNovoJogo extends JPanel{
 				IJogoRemoto jogoRemotoOponente = JogoRemoto.getJogoRemoto(nomeJogoSelecionado);
 				String nomeMeuJogoRemoto = jogoRemotoOponente.entrarNoJogo(nomeJogador);
 				Main.setJogoRemoto(JogoRemoto.getJogoRemoto(nomeMeuJogoRemoto));
-				
+
+				continuarMonitorando = false;
 				Main.abrirPainelPosicionamentoBarcos();
 
 			} catch (RemoteException e) {
@@ -140,17 +187,6 @@ public class PainelNovoJogo extends JPanel{
 
 		}else{
 			JOptionPane.showMessageDialog(this, "Selecione um jogo e preencha seu nome", "Erro", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	public void atualizarComboJogosEmEspera(){
-		try {
-			System.out.println("Atualizando a lista de jogos...");
-			instance.getListaJogos().removeAll();
-			instance.getListaJogos().setListData(Main.getServicoJogos().getJogos().keySet().toArray());
-		} catch (RemoteException e) {
-			System.out.println("Não foi possivel reucperar a lista de jogos");
-			e.printStackTrace();
 		}
 	}
 
@@ -173,7 +209,6 @@ public class PainelNovoJogo extends JPanel{
 				JOptionPane.showMessageDialog(this,exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 			}
 
-			PainelNovoJogo.getInstance().atualizarComboJogosEmEspera();
 			Main.aguardar();
 
 			final String nomeJogo2 = nomeJogoRemoto;
@@ -207,6 +242,8 @@ public class PainelNovoJogo extends JPanel{
 				};
 				Thread thread = new Thread(verificador);
 				thread.start();
+
+				continuarMonitorando = false;
 				System.out.println("Novo jogo criado!");
 			} else {
 				JOptionPane.showMessageDialog(this, "Nome de jogador inválido", "Erro", JOptionPane.ERROR_MESSAGE);

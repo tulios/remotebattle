@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.remotebattle.dominio.enums.TipoBarco;
 
+@SuppressWarnings("serial")
 public class Barco implements Serializable{
 
 	private List<Bloco> blocos;

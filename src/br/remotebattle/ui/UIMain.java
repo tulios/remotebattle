@@ -1,10 +1,15 @@
 package br.remotebattle.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import br.remotebattle.dominio.Jogo;
 import br.remotebattle.dominio.enums.Dificuldade;
@@ -16,6 +21,8 @@ public class UIMain {
 	private static MapaJogo mapaJogo;
 	private static MapaJogo mapaOponente;
 	private static JPanel rodape;
+	
+	private static JProgressBar andamentoJogo;
 	
 	public static void main(String[] args) {
 		
@@ -31,12 +38,30 @@ public class UIMain {
 		
 		mapaOponente = new MapaJogo(mapaJogo.getJogador());
 		
-		centro.add(mapaJogo, BorderLayout.WEST);
-		centro.add(mapaOponente, BorderLayout.EAST);
+		Border borda = new LineBorder(Color.BLACK);
+		Border bordaMeuMapa = new TitledBorder(borda, "Meu mapa:");
+		Border bordaMapaOponente = new TitledBorder(borda, "Mapa oponente:");
 		
-		rodape = new JPanel();
+		mapaJogo.setBorder(bordaMeuMapa);
+		mapaJogo.bloquearMapa();
+		
+		mapaOponente.setBorder(bordaMapaOponente);
+		mapaOponente.setModoJogo(true);
+		
+		centro.add(mapaJogo, BorderLayout.WEST);
+		centro.add(mapaOponente, BorderLayout.CENTER);
+		
+		rodape = new JPanel(new BorderLayout());
 		rodape.setPreferredSize(new Dimension(40,40));
 		centro.add(rodape, BorderLayout.PAGE_END);
+		
+		andamentoJogo = new JProgressBar();
+		andamentoJogo.setMaximum(100);
+		andamentoJogo.setMinimum(0);
+		andamentoJogo.setStringPainted(true);
+		
+		rodape.add(new JLabel("Andamento do jogo:"), BorderLayout.PAGE_START);
+		rodape.add(andamentoJogo, BorderLayout.CENTER);
 		
 		Janela.getInstance().add(centro, BorderLayout.CENTER);
 		Janela.getInstance().validate();
@@ -82,4 +107,7 @@ public class UIMain {
 		return UIMain.rodape;
 	}
 	
+	public static JProgressBar getAndamentoJogo() {
+		return andamentoJogo;
+	}
 }

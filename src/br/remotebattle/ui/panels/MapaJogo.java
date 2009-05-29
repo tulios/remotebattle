@@ -32,6 +32,7 @@ public class MapaJogo extends JPanel {
 	private Color corPadraoBotao =  Color.WHITE;
 
 	private IniciarJogoController controller;
+	private boolean modoJogo;
 
 	/**
 	 * Construtor	
@@ -92,6 +93,14 @@ public class MapaJogo extends JPanel {
 
 		this.validate();
 	}
+	
+	public void bloquearMapa(){
+		for(int y = 0; y < getTamanho(); y++){
+			for (int x = 0; x < getTamanho(); x++){
+				getBloco(x,y).setEnabled(false);
+			}
+		}
+	}
 
 	/*
 	 * 
@@ -122,7 +131,15 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico[][] getMapaGrafico() {
 		return blocos;
 	}
-
+	
+	public boolean isModoJogo() {
+		return modoJogo;
+	}
+	
+	public void setModoJogo(boolean modoJogo) {
+		this.modoJogo = modoJogo;
+	}
+	
 	/*
 	 * 
 	 * Ações

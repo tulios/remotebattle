@@ -2,6 +2,7 @@ package br.remotebattle.dominio;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Coordenada implements Serializable{
 
 	private int x;
