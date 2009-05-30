@@ -10,6 +10,9 @@ public class Jogador implements Serializable {
 	private String nome;
 	private Mapa mapa;
 	private boolean possoJogar;
+	private boolean vencedor;
+	private boolean perdedor;
+	
 	private Jogador oponente;
 	
 	public Jogador(String nome, Dificuldade dificuldade){
@@ -17,6 +20,22 @@ public class Jogador implements Serializable {
 		this.mapa = new Mapa(dificuldade.getTamanho());
 	}
 	
+	public boolean isVencedor(){
+		return vencedor;
+	}
+	
+	public boolean isPerdedor(){
+		return perdedor;
+	}
+	
+	public void setVencedor(boolean vencedor) {
+		this.vencedor = vencedor;
+	}
+
+	public void setPerdedor(boolean perdedor) {
+		this.perdedor = perdedor;
+	}
+
 	public boolean isPossoJogar() {
 		return possoJogar;
 	}

@@ -17,12 +17,6 @@ public class Jogo implements Serializable {
 		this.jogador1.setPossoJogar(true);
 	}
 
-	public boolean isGameOver(){
-		if(jogador1.getMapa().isGameOver() || jogador2.getMapa().isGameOver())
-			return true;
-		return false;
-	}
-	
 	@Override
 	public String toString() {
 		return "Jogador1: "+this.jogador1.getNome()+" - "+dificuldade;

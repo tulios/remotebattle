@@ -8,8 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 import br.remotebattle.controller.AtiradorController;
 import br.remotebattle.controller.IniciarJogoController;
@@ -44,18 +46,18 @@ public class MapaJogo extends JPanel {
 	public MapaJogo(Jogador jogador){
 		this.jogador = jogador;
 		this.setLayout(new GridBagLayout());
-		
+
 		this.setVisible(false);
-		
+
 		controller = new IniciarJogoController();
 		atiradorController = new AtiradorController();
-		
+
 		inicializarBlocosGraficos();
 		apresentarMapaGrafico();
-		
+
 		this.setVisible(true);
 	}
-	
+
 	private void inicializarBlocosGraficos(){
 		blocos = new BlocoGrafico[getTamanho()][getTamanho()];
 	}
@@ -73,15 +75,14 @@ public class MapaJogo extends JPanel {
 			}
 		}
 	}
-	
+
 	public void atualizarBloco(Bloco bloco){
-		BlocoGrafico bg = getBloco(bloco.getX(), bloco.getY());
-		if (bloco.isAtingido()){//se atingido eh barco
-			bg.setText("*");
-		}else{//agua
-			bg.setText("-");
+		if (bloco != null){
+			BlocoGrafico bg = getBloco(bloco.getX(), bloco.getY());
+			bg.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+			bg.setBackground(Color.BLACK);
+			bg.validate();
 		}
-		bg.validate();
 	}
 
 	public void preencherBarco(BlocoGrafico bloco){
@@ -111,7 +112,7 @@ public class MapaJogo extends JPanel {
 
 		this.validate();
 	}
-	
+
 	public void bloquearMapa(){
 		for(int y = 0; y < getTamanho(); y++){
 			for (int x = 0; x < getTamanho(); x++){
@@ -149,19 +150,19 @@ public class MapaJogo extends JPanel {
 	public BlocoGrafico[][] getMapaGrafico() {
 		return blocos;
 	}
-	
+
 	public boolean isModoJogo() {
 		return modoJogo;
 	}
-	
+
 	public void setModoJogo(boolean modoJogo) {
 		this.modoJogo = modoJogo;
 	}
-	
+
 	public AtiradorController getAtiradorController() {
 		return atiradorController;
 	}
-	
+
 	/*
 	 * 
 	 * Ações
@@ -181,7 +182,7 @@ public class MapaJogo extends JPanel {
 
 						Thread.sleep(3*1000);
 					}
-					
+
 					Janela.getInstance().getContentPane().removeAll();
 					UIMain.bindMapa();
 				}catch(Exception e){
@@ -189,7 +190,7 @@ public class MapaJogo extends JPanel {
 				}
 			}
 		};
-		
+
 		Thread t = new Thread(runnable);
 		t.start();
 

@@ -102,16 +102,25 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 		return null;
 	}
 	
-	public boolean atirar(int x, int y) throws RemoteException{
+	public void mudarTurno() throws RemoteException{
 		jogador.setPossoJogar(false);
 		jogador.getOponente().setPossoJogar(true);
-		return jogador.getOponente().getMapa().atirar(x,y);
-	}
-
-	public boolean possoJogar() throws RemoteException{
-		return jogador.isPossoJogar();
 	}
 	
+	public boolean atirar(int x, int y) throws RemoteException{
+		boolean atingido = jogador.getOponente().getMapa().atirar(x,y);
+		System.out.println(jogador.getNome());
+		if (jogador.getOponente().getMapa().isGameOver()){
+			
+			System.out.println(jogador.getNome()+" venceu! e "+jogador.getOponente().getNome()+" perdeu!");			
+			
+			jogador.getOponente().setPerdedor(true);
+			jogador.setVencedor(true);
+		}
+		
+		return atingido;
+	}
+
 	public Jogo getJogo() {
 		return jogo;
 	}

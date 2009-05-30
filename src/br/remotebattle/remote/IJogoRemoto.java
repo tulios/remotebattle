@@ -15,5 +15,5 @@ public interface IJogoRemoto extends Remote{
 	public Jogador getJogador() throws RemoteException;
 	public void iniciarJogo(List<Barco> barcos) throws RemoteException;
 	public boolean atirar(int x, int y) throws RemoteException;
-	public boolean possoJogar() throws RemoteException;
+	public void mudarTurno() throws RemoteException;
 }

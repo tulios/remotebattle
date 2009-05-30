@@ -44,13 +44,15 @@ public class Barco implements Serializable{
 	
 	public boolean isDestruido(){
 		int numeroBlocosAtingidos = 0;
-		
+		System.out.println(">>"+getTipo());
 		for(Bloco bloco : blocos){
 			if(bloco.isAtingido())
 				numeroBlocosAtingidos++;
 		}
 		
-		if(numeroBlocosAtingidos == getTipo().getQuantidade()){
+		System.out.println("nº blocos atingidos = "+numeroBlocosAtingidos+" - (quantidade total: "+getTipo().getTamanho()+")");
+		
+		if(numeroBlocosAtingidos == getTipo().getTamanho()){
 			return true;
 		}
 		

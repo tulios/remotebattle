@@ -10,6 +10,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import br.remotebattle.ui.Janela;
+import br.remotebattle.ui.UIMain;
 import br.remotebattle.ui.panels.MapaJogo;
 
 @SuppressWarnings("serial")
@@ -49,6 +50,8 @@ public class BlocoGrafico extends JButton{
 			mapaJogo.getAtiradorController().definirAlvo(x, y);
 			mapaJogo.getAtiradorController().execute();
 			boolean atingido = mapaJogo.getAtiradorController().isAtingido();
+			
+			UIMain.getMudarTurnoController().execute();
 			
 			Border border = new LineBorder(Color.BLACK);
 			this.setBorder(border);

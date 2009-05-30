@@ -54,9 +54,12 @@ public class Mapa implements Serializable {
 		int numeroBarcosDestruidos = 0;
 		
 		for(Barco barco : this.barcos){
-			if(barco.isDestruido())
+			if(barco.isDestruido()){
 				numeroBarcosDestruidos++;
+			}
 		}
+		
+		System.out.println("\nnº barcos destruidos = "+numeroBarcosDestruidos+"\n Quantidade de barcos: "+barcos.size()+"\n");
 		
 		if(numeroBarcosDestruidos == this.barcos.size())
 			return true;

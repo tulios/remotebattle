@@ -4,11 +4,17 @@ import java.awt.Color;
 
 public enum TipoBarco {
 
-	PORTA_AVIOES(6,1, Color.RED), 
-	ENCOURACADO(5,2, Color.BLUE), 
-	CRUZADOR(4,3, Color.CYAN), 
-	SUBMARINO(3,3, Color.GREEN), 
-	REBOQUE(2,2, Color.MAGENTA);
+	//PORTA_AVIOES(6,1, Color.RED), 
+	//ENCOURACADO(5,2, Color.BLUE), 
+	//CRUZADOR(4,3, Color.CYAN), 
+	//SUBMARINO(3,3, Color.GREEN), 
+	//REBOQUE(2,2, Color.MAGENTA);
+	
+	//PORTA_AVIOES(6,1, Color.RED), 
+	//ENCOURACADO(5,2, Color.BLUE), 
+	//CRUZADOR(4,3, Color.CYAN), 
+	SUBMARINO(3,1, Color.GREEN), 
+	REBOQUE(2,1, Color.MAGENTA);
 
 	private int tamanho;
 	private int quantidade;

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.Border;
@@ -12,6 +13,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import br.remotebattle.controller.MediadorController;
+import br.remotebattle.controller.MudarTurnoController;
 import br.remotebattle.dominio.Jogo;
 import br.remotebattle.dominio.enums.Dificuldade;
 import br.remotebattle.ui.panels.Info;
@@ -26,10 +28,11 @@ public class UIMain {
 	private static JProgressBar andamentoJogo;
 
 	private static MediadorController mediadorController;
-	private static boolean fimDeJogo;
+	private static MudarTurnoController mudarTurnoController;
 
 	static{
 		mediadorController = new MediadorController();
+		mudarTurnoController = new MudarTurnoController();
 	}
 
 	public static void main(String[] args) {
@@ -38,12 +41,16 @@ public class UIMain {
 		init(jogo);
 
 	}
+	
+	public static MudarTurnoController getMudarTurnoController() {
+		return mudarTurnoController;
+	}
 
 	private static void inicializarThreadMediador(){
 		Runnable runnable = new Runnable(){
 			@Override
 			public void run() {
-				while(!fimDeJogo){
+				while(true){
 					mediadorController.execute();
 					boolean possoJogar = mediadorController.possoJogar();
 
@@ -51,9 +58,33 @@ public class UIMain {
 
 					if(possoJogar){
 						mapaJogo.atualizarBloco(mediadorController.getUltimoTiroNesseMapa());
+						
+						if (mediadorController.getJogador().isPerdedor()){
+							
+							mudarTurnoController.execute();
+							
+							info.mudarTurno("Você perdeu!", false);
+							JOptionPane.showMessageDialog(Janela.getInstance(),
+  														  mediadorController.getJogador().getNome()+" você perdeu!", 
+														  "Game Over",
+														  JOptionPane.ERROR_MESSAGE);
+							break;			
+						}else if (mediadorController.getJogador().isVencedor()){
+							
+							mudarTurnoController.execute();
+							
+							info.mudarTurno("Você venceu!", false);
+							JOptionPane.showMessageDialog(Janela.getInstance(),
+  														  mediadorController.getJogador().getNome()+" você venceu!", 
+														  "Game Over",
+														  JOptionPane.INFORMATION_MESSAGE);
+							break;
+						}
+						
 						Janela.getInstance().getGlassPane().setVisible(false);
 						info.mudarTurno("Sua vez!", false);
 					}else{						
+						Janela.getInstance().getGlassPane().setVisible(true);
 						info.mudarTurno("Aguardando oponente", true);
 					}
 
