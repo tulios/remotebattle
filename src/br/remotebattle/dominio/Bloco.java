@@ -7,7 +7,7 @@ public class Bloco implements Serializable {
 
 	private Coordenada coordenada;
 	private boolean ocupado;
-	private boolean atingido;
+	private boolean atingido;//se não foi atingido eh agua porra!
 	
 	public Bloco(){
 		this.coordenada = new Coordenada(-1,-1);
@@ -21,7 +21,12 @@ public class Bloco implements Serializable {
 	
 	public Bloco(int x, int y, boolean ocupado, boolean atingido) {
 		this.coordenada = new Coordenada(x,y);
+		this.atingido = atingido;
 		this.ocupado = ocupado;
+	} 
+	
+	public Bloco(int x, int y, boolean atingido) {
+		this.coordenada = new Coordenada(x,y);
 		this.atingido = atingido;
 	} 
 	

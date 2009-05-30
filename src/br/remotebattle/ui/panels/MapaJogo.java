@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import br.remotebattle.controller.AtiradorController;
 import br.remotebattle.controller.IniciarJogoController;
+import br.remotebattle.dominio.Bloco;
 import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.TipoBarco;
 import br.remotebattle.ui.Janela;
@@ -71,6 +72,16 @@ public class MapaJogo extends JPanel {
 				this.add(getBloco(x, y), cons);
 			}
 		}
+	}
+	
+	public void atualizarBloco(Bloco bloco){
+		BlocoGrafico bg = getBloco(bloco.getX(), bloco.getY());
+		if (bloco.isAtingido()){//se atingido eh barco
+			bg.setText("*");
+		}else{//agua
+			bg.setText("-");
+		}
+		bg.validate();
 	}
 
 	public void preencherBarco(BlocoGrafico bloco){

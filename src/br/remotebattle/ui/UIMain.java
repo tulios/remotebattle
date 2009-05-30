@@ -50,6 +50,7 @@ public class UIMain {
 					System.out.println("posso jogar? "+possoJogar);
 
 					if(possoJogar){
+						mapaJogo.atualizarBloco(mediadorController.getUltimoTiroNesseMapa());
 						Janela.getInstance().getGlassPane().setVisible(false);
 						info.mudarTurno("Sua vez!", false);
 					}else{						

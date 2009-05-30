@@ -9,6 +9,7 @@ public class Mapa implements Serializable {
 
 	private Bloco[][] blocos;
 	private List<Barco> barcos;
+	private Bloco ultimoTiroNesseMapa;
 	
 	public Mapa(int tamanho){
 		blocos = new Bloco[tamanho][tamanho];
@@ -20,10 +21,16 @@ public class Mapa implements Serializable {
 		this.barcos = barcos;
 	}
 	
+	public Bloco getUltimoTiroNesseMapa() {
+		return ultimoTiroNesseMapa;
+	}
+	
 	public boolean atirar(int x, int y){
+		ultimoTiroNesseMapa = new Bloco(x, y);
 		for (Barco barco : barcos){
 			if (barco.estaNaCoordenada(x, y)){
 				barco.destruir(x, y);
+				ultimoTiroNesseMapa.setAtingido(true);
 				return true;
 			}
 		}
