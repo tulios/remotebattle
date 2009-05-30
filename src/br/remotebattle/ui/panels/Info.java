@@ -49,13 +49,14 @@ public class Info extends JPanel{
 		
 		inicializarBarcos();
 		
-		cons.gridwidth = 4;
+		cons.gridwidth = 2;
 		cons.anchor = GridBagConstraints.LINE_START;
 		cons.gridy = 0;
 		cons.gridx = 0;
 		
 		this.add(infoJogadores, cons);
 		
+		cons.gridwidth = 1;
 		cons.gridy = 1;
 		cons.gridx = 0;
 		

@@ -97,6 +97,10 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 		
 		return null;
 	}
+	
+	public boolean atirar(int x, int y) throws RemoteException{
+		return jogador.getOponente().getMapa().atirar(x,y);
+	}
 
 	public Jogo getJogo() {
 		return jogo;

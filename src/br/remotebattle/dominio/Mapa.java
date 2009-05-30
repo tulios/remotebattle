@@ -20,6 +20,16 @@ public class Mapa implements Serializable {
 		this.barcos = barcos;
 	}
 	
+	public boolean atirar(int x, int y){
+		for (Barco barco : barcos){
+			if (barco.estaNaCoordenada(x, y)){
+				barco.destruir(x, y);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void inicializarBlocos(){
 		int x = 0;
 		int y = 0;

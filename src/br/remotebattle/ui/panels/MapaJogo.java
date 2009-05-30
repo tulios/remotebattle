@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import br.remotebattle.controller.AtiradorController;
 import br.remotebattle.controller.IniciarJogoController;
 import br.remotebattle.dominio.Jogador;
 import br.remotebattle.dominio.enums.TipoBarco;
@@ -32,6 +33,7 @@ public class MapaJogo extends JPanel {
 	private Color corPadraoBotao =  Color.WHITE;
 
 	private IniciarJogoController controller;
+	private AtiradorController atiradorController;
 	private boolean modoJogo;
 
 	/**
@@ -43,7 +45,8 @@ public class MapaJogo extends JPanel {
 		this.setLayout(new GridBagLayout());
 
 		controller = new IniciarJogoController();
-
+		atiradorController = new AtiradorController();
+		
 		inicializarBlocosGraficos();
 		apresentarMapaGrafico();
 	}
@@ -138,6 +141,10 @@ public class MapaJogo extends JPanel {
 	
 	public void setModoJogo(boolean modoJogo) {
 		this.modoJogo = modoJogo;
+	}
+	
+	public AtiradorController getAtiradorController() {
+		return atiradorController;
 	}
 	
 	/*

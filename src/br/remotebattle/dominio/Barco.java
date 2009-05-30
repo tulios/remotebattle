@@ -18,6 +18,26 @@ public class Barco implements Serializable{
 		}
 	}
 	
+	public boolean estaNaCoordenada(int x, int y){
+		if (getBlocoPelaCoordenada(x, y) != null){
+			return true;
+		}
+		return false;
+	}
+	
+	public void destruir(int x, int y){
+		getBlocoPelaCoordenada(x, y).setAtingido(true);
+	}
+	
+	private Bloco getBlocoPelaCoordenada(int x, int y){
+		for (Bloco bloco: blocos){
+			if (bloco.getX() == x && bloco.getY() == y){
+				return bloco;
+			}
+		}
+		return null;
+	}
+	
 	public TipoBarco getTipo(){
 		return TipoBarco.newInstance(blocos.size());
 	}

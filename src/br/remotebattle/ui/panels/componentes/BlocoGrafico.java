@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import br.remotebattle.ui.panels.MapaJogo;
 
@@ -41,6 +43,24 @@ public class BlocoGrafico extends JButton{
 			int y = this.getCoordY();
 			
 			System.out.println("atirou! ("+x+", "+y+")");
+			mapaJogo.getAtiradorController().definirAlvo(x, y);
+			mapaJogo.getAtiradorController().execute();
+			boolean atingido = mapaJogo.getAtiradorController().isAtingido();
+			
+			Border border = new LineBorder(Color.BLACK);
+			this.setBorder(border);
+			
+			if (atingido){
+				this.setBackground(Color.RED);				
+			}else{
+				this.setBackground(Color.BLUE);
+			}
+			
+			marcado = true;
+			this.setEnabled(false);
+			
+			this.validate();
+			
 		}else{
 		//Colocando barcos============================================
 			if (!isMarcado()){
