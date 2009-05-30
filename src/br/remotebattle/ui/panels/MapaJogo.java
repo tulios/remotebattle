@@ -43,14 +43,18 @@ public class MapaJogo extends JPanel {
 	public MapaJogo(Jogador jogador){
 		this.jogador = jogador;
 		this.setLayout(new GridBagLayout());
-
+		
+		this.setVisible(false);
+		
 		controller = new IniciarJogoController();
 		atiradorController = new AtiradorController();
 		
 		inicializarBlocosGraficos();
 		apresentarMapaGrafico();
+		
+		this.setVisible(true);
 	}
-
+	
 	private void inicializarBlocosGraficos(){
 		blocos = new BlocoGrafico[getTamanho()][getTamanho()];
 	}

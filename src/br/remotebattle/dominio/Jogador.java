@@ -9,6 +9,7 @@ public class Jogador implements Serializable {
 
 	private String nome;
 	private Mapa mapa;
+	private boolean possoJogar;
 	private Jogador oponente;
 	
 	public Jogador(String nome, Dificuldade dificuldade){
@@ -16,6 +17,14 @@ public class Jogador implements Serializable {
 		this.mapa = new Mapa(dificuldade.getTamanho());
 	}
 	
+	public boolean isPossoJogar() {
+		return possoJogar;
+	}
+
+	public void setPossoJogar(boolean possoJogar) {
+		this.possoJogar = possoJogar;
+	}
+
 	public String getNome() {
 		return nome;
 	}

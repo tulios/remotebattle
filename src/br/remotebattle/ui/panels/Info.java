@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import br.remotebattle.dominio.enums.TipoBarco;
 import br.remotebattle.ui.Main;
@@ -20,12 +21,56 @@ public class Info extends JPanel{
 	private JPanel[] barcos;
 	
 	private JLabel infoJogadores;
+	private JProgressBar bar;
+	private JLabel turno;
 	
 	public Info(){
 		this.setLayout(new GridBagLayout());
 		this.setBackground(Color.BLACK);
 		
 		prepararComponentes();
+	}
+	
+	public void ativarModoJogo(){
+		this.removeAll();
+		
+		GridBagConstraints cons = new GridBagConstraints();
+		cons.insets = new Insets(1,1,1,1);
+		
+		cons.gridwidth = 2;
+		cons.anchor = GridBagConstraints.LINE_START;
+		cons.gridy = 0;
+		cons.gridx = 0;
+		
+		this.add(infoJogadores, cons);
+		
+		bar = new JProgressBar();
+		
+		turno = new JLabel("");
+		turno.setForeground(Color.WHITE);
+		
+		cons.gridwidth = 1;
+		cons.anchor = GridBagConstraints.LINE_START;
+		cons.fill = GridBagConstraints.HORIZONTAL;
+		cons.gridy = 1;
+		cons.gridx = 0;
+		
+		this.add(bar, cons);
+		
+		cons.gridx = 1;
+		this.add(turno, cons);
+	}
+	
+	public void mudarTurno(String texto, boolean ligarBarra){
+		turno.setText(texto);
+		if (ligarBarra){
+			bar.setIndeterminate(true);
+		}else{
+			bar.setIndeterminate(false);
+		}
+		
+		turno.validate();
+		bar.validate();		
 	}
 	
 	private void prepararComponentes(){

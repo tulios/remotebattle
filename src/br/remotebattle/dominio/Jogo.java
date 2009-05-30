@@ -13,7 +13,8 @@ public class Jogo implements Serializable {
 	
 	public Jogo(String nomeJogador1, Dificuldade dificuldade){
 		this.dificuldade = dificuldade;
-		this.jogador1 = new Jogador(nomeJogador1, dificuldade);		
+		this.jogador1 = new Jogador(nomeJogador1, dificuldade);
+		this.jogador1.setPossoJogar(true);
 	}
 
 	public boolean isGameOver(){

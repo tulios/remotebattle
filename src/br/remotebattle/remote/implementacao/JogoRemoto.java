@@ -54,7 +54,11 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 				System.out.println("O jogador "+nomeJogador+" entrou no jogo!");
 				System.out.println("\nJogo do Jogador1: "+this);
 				System.out.println("\nJogo do Jogador2: "+jogoRemoto);
-			
+				System.out.println("\nJogador 1 pode jogar? "+this.jogo.getJogador1().isPossoJogar());
+				System.out.println("\nJogador 2 pode jogar? "+this.jogo.getJogador2().isPossoJogar());
+				
+				System.out.println("\nJogador pode jogar? "+this.jogador.isPossoJogar());
+				
 			} catch (MalformedURLException e) {
 				//Erro. Volta o estado do jogador 2 para o estado inicial
 				this.jogo.setJogador2(null);
@@ -99,9 +103,15 @@ public class JogoRemoto extends UnicastRemoteObject implements IJogoRemoto {
 	}
 	
 	public boolean atirar(int x, int y) throws RemoteException{
+		jogador.setPossoJogar(false);
+		jogador.getOponente().setPossoJogar(true);
 		return jogador.getOponente().getMapa().atirar(x,y);
 	}
 
+	public boolean possoJogar() throws RemoteException{
+		return jogador.isPossoJogar();
+	}
+	
 	public Jogo getJogo() {
 		return jogo;
 	}

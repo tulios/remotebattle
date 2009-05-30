@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import br.remotebattle.ui.Janela;
 import br.remotebattle.ui.panels.MapaJogo;
 
 @SuppressWarnings("serial")
@@ -39,6 +40,8 @@ public class BlocoGrafico extends JButton{
 	private void click(ActionEvent e){
 		//atirando====================================================
 		if (mapaJogo.isModoJogo()){
+			Janela.getInstance().getGlassPane().setVisible(true);
+			
 			int x = this.getCoordX();
 			int y = this.getCoordY();
 			
